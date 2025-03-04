@@ -1,0 +1,20 @@
+.table {
+  width: 100%;
+  min-width: 600px;
+  margin: 20px 0;
+  border-collapse: collapse; /* Ensure borders don't double up */
+}
+
+.table th, .table td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd; /* Add border to table cells */
+}
+
+.custom-btn {
+  padding: 6px 12px; /* Adjust the padding as needed */
+  font-size: 14px; /* Adjust the font size as needed */
+  line-height: 1.5; /* Adjust the line height as needed */
+  height: 80%; /* Set the height to 80% of the input field height */
+  align-self: flex-end; /* Align the button with the bottom */
+}
