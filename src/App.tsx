@@ -2,7 +2,7 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 
 function App() {
   const [item, setItem] = useState('');
@@ -64,14 +64,19 @@ function App() {
   };
 
   const handleExportPDF = (): void => {
-    const doc: jsPDF = new jsPDF('landscape');
-    doc.text('Grocery List', 14, 16);
-    doc.autoTable({
-      head: [['Item', 'Brand', 'Available', 'Used', 'Bought']],
-      body: tableData.map((data) => [data.item, data.brand, data.available.toString(), '', '']),
-      startY: 20,
-    });
-    doc.save('grocery-list.pdf');
+    try {
+      const doc = new jsPDF('landscape');
+      doc.text('Grocery List', 14, 16);
+      autoTable(doc, {
+        head: [['Item', 'Brand', 'Available', 'Used', 'Bought']],
+        body: tableData.map((data) => [data.item, data.brand, data.available.toString(), '', '']),
+        startY: 20,
+      });
+      doc.save('grocery-list.pdf');
+      console.log('PDF generated successfully');
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
   };
 
   // Sort tableData alphabetically by item name, then by brand if item names are the same
