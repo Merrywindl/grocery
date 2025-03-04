@@ -82,15 +82,6 @@ function App() {
     return a.item.localeCompare(b.item);
   });
 
-  const generatePDF = () => {
-    const doc = new jsPDF();
-    doc.autoTable({
-      head: [['Item', 'Brand', 'Available']],
-      body: tableData.map(data => [data.item, data.brand, data.available.toString()]),
-    });
-    doc.save('table.pdf');
-  };
-
   return (
     <div className="App">
       <form onSubmit={handleSubmit} className="justify-content-center d-flex flex-wrap">
@@ -179,7 +170,6 @@ function App() {
       </table>
       <button onClick={handleClearData} className="btn btn-danger mt-3">Clear Data</button>
       <button onClick={handleExportPDF} className="btn btn-secondary mt-3 ml-2">Export to PDF</button>
-      <button onClick={generatePDF}>Generate PDF</button>
     </div>
   );
 }
