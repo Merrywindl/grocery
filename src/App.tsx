@@ -8,7 +8,13 @@ function App() {
   const [item, setItem] = useState('');
   const [brand, setBrand] = useState('');
   const [available, setAvailable] = useState('');
-  const [tableData, setTableData] = useState([]);
+  interface TableData {
+    item: string;
+    brand: string;
+    available: number;
+  }
+
+  const [tableData, setTableData] = useState<TableData[]>([]);
   const [updateMode, setUpdateMode] = useState('add'); // State to track the selected mode
 
   // Load data from local storage when the component mounts
@@ -57,12 +63,12 @@ function App() {
     setTableData([]);
   };
 
-  const handleExportPDF = () => {
-    const doc = new jsPDF('landscape');
+  const handleExportPDF = (): void => {
+    const doc: jsPDF = new jsPDF('landscape');
     doc.text('Grocery List', 14, 16);
     doc.autoTable({
       head: [['Item', 'Brand', 'Available', 'Used', 'Bought']],
-      body: tableData.map(data => [data.item, data.brand, data.available, '', '']),
+      body: tableData.map((data) => [data.item, data.brand, data.available.toString(), '', '']),
       startY: 20,
     });
     doc.save('grocery-list.pdf');
@@ -75,6 +81,15 @@ function App() {
     }
     return a.item.localeCompare(b.item);
   });
+
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    doc.autoTable({
+      head: [['Item', 'Brand', 'Available']],
+      body: tableData.map(data => [data.item, data.brand, data.available.toString()]),
+    });
+    doc.save('table.pdf');
+  };
 
   return (
     <div className="App">
@@ -164,6 +179,7 @@ function App() {
       </table>
       <button onClick={handleClearData} className="btn btn-danger mt-3">Clear Data</button>
       <button onClick={handleExportPDF} className="btn btn-secondary mt-3 ml-2">Export to PDF</button>
+      <button onClick={generatePDF}>Generate PDF</button>
     </div>
   );
 }
